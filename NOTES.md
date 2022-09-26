@@ -20,8 +20,6 @@ npm run build
 cd packages/app-lib
 npm i ../../surrealdb.js/
 
-
-
 fix is using
 https://discordapp.com/channels/902568124350599239/1013527402674139268/1022283678010843176
 

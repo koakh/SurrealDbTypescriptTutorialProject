@@ -1,15 +1,17 @@
 // @ts-expect-error
 import Surreal from 'surrealdb.js';
-// const Surreal = require('surrealdb.js');
-// type Surreal = import('surrealdb.js').Surreal;
 
 const db = new Surreal('http://127.0.0.1:8000/rpc');
+const log = (object: unknown, showLog: boolean = true) => {
+	if (showLog) { 
+		console.log(JSON.stringify(object, undefined, 2)) 
+	}
+};
 
 async function main() {
 
 	try {
-
-		// Signin as a namespace, database, or root user
+		// signIn as a namespace, database, or root user
 		await db.signin({
 			user: 'root',
 			pass: 'root',
@@ -26,23 +28,25 @@ async function main() {
 				last: 'Morgan Hitchcock',
 			},
 			marketing: true,
-			identifier: Math.random().toString(36).substr(2, 10),
+			identifier: Math.random().toString(36).slice(2, 10),
 		});
+		log(created);
 
 		// Update a person record with a specific id
 		let updated = await db.change("person:jaime", {
 			marketing: true,
 		});
+		log(updated);
 
 		// Select all people records
 		let people = await db.select("person");
-		console.log(people);
+		log(people);
 
 		// Perform a custom advanced query
 		let groups = await db.query('SELECT marketing, count() FROM type::table($tb) GROUP BY marketing', {
 			tb: 'person',
 		});
-
+		log(groups);
 	} catch (e) {
 		console.error('ERROR', e);
 	}
